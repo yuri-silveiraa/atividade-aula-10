@@ -13,6 +13,7 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Checkbox from '@mui/material/Checkbox';
 import Modal from '@mui/material/Modal';
 
 import CriarTarefa from './CriarTarefa';
@@ -81,15 +82,28 @@ const ListarTarefa = () => {
     );
   };
 
+  const handleConcluir = (id) => {
+    setTarefas((current) =>
+      current.map((tarefa) =>
+        tarefa.idTarefa === id
+          ? {
+              ...tarefa,
+              statusTarefa: tarefa.statusTarefa === 'Concluída' ? 'Em Andamento' : 'Concluída',
+            }
+          : tarefa
+      )
+    );
+  };
+
     return(
     <>
-    <Card>
+    <Card sx={{ backgroundColor: '#b6ffff' }}>
         <CardHeader
           title="Tarefas"
           subheader="Listagem de Tarefas"
         /> 
         <CardContent>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{ backgroundColor: '#7cdaf9'}}>
             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                 <TableHead>
                 <TableRow>
@@ -121,6 +135,13 @@ const ListarTarefa = () => {
                       <TableCell align="right">{row.fimTarefa}</TableCell>
                       <TableCell align="right">{row.statusTarefa}</TableCell>
                       <TableCell align="right">{row.recursoTarefa}</TableCell>
+                      <TableCell align="center">
+                        <Checkbox
+                          checked={row.statusTarefa === 'Concluída'}
+                          onChange={() => handleConcluir(row.idTarefa)}
+                          color="primary"
+                        />
+                      </TableCell>
                       <TableCell align="center">
                         <Button variant="contained" color="success" onClick={() => handleEditar(row.idTarefa)}><EditIcon fontSize="small" /></Button>            
                       </TableCell>
